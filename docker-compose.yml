@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  frontend:
+    # build: ./frontend
+    image: moguda/timeapp-frontend-dev
+    restart: always
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+  api:
+    # build: ./api
+    image: moguda/timeapp-api-dev
+    restart: always
+    ports:
+      - '5000:5000'
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PORT: '3306'
+      MYSQL_PASSWORD: password
+      MYSQL_DB: time_db
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: time_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '8080:8080'
+
+volumes:
+  mysql_data:
+

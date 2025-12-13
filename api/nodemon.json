@@ -1,0 +1,11 @@
+{
+  "watch": ["src", "index.mjs"],
+  "ext": "mjs,js,json",
+  "ignore": ["node_modules"],
+  "exec": "node index.mjs",
+  "legacyWatch": true,
+  "polling": true
+}
+
+
+
