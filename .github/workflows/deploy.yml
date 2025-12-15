@@ -7,72 +7,63 @@ on:
 
 env:
   REGISTRY: gchr.io
-  IMAGE_NAME: ${{github.repository}}
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   test:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: ['20.19.3']
-    
     steps:
-      - name: Cloning repsitory
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Install Node JS ${{matrix.node-version}}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{matrix.node-version}}
 
-      - name: API Dependency install
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+
+      - name: Install API Dependencies
         working-directory: ./api
         run: npm install
 
-      - name: Run unit test
+      - name: Run unit tests
         working-directory: ./api
         run: npm test
 
-      - name: Frontend Dependency install
+      - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
 
-  build-and-deploy:
+  build-and-push:
     if: github.event_name == 'push'
     needs: test
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: ['20.19.3']
-    
     steps:
-      - name: Cloning repsitory
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Docker login
-        run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u "${{secrets.DOCKER_USERNAME}}" --password-stdin
-      
-      - name: API Image build and push to docker hub
+
+      - name: Login to Docker Hub Registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: API image build and push
         run: |
-            docker build -t ${{secrets.DOCKER_USERNAME}}/timeapp-api-1_24_4 ./api
-            docker push ${{secrets.DOCKER_USERNAME}}/timeapp-api-1_24_4
-      
-      - name: FRONT Image build and push to docker hub
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/time-app-api ./api
+          docker push ${{ secrets.DOCKER_USERNAME }}/time-app-api
+
+      - name: Front image build and push
         run: |
-            docker build -t ${{secrets.DOCKER_USERNAME}}/timeapp-frontend-1_24_4 ./api
-            docker push ${{secrets.DOCKER_USERNAME}}/timeapp-frontend-1_24_4
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/time-app-front ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/time-app-front
+
   deploy:
     if: github.event_name == 'workflow_dispatch'
-    needs: build-and-deploy
     runs-on: ubuntu-latest
-
     steps:
-      - name: Cloning repsitory
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: AWS Linux VM deploy
+      - name: VPS Deploy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{secrets.AWS_HOST}}
@@ -81,12 +72,13 @@ jobs:
           port: 22
 
           script: |
-            if [ ! -d "/app/zamanov-time-app/.git" ]; then
-              git clone https://github.com/Zamanof/timeapp_deploy.git /app/zamanov-time-app
+            if [! -d "/app/time-app/.git"]; then
+             git clone https://github.com/${{github.repository}} /app/time-app
             fi
 
-            cd /app/zamanov-time-app
+            cd /app/time-app
             git pull origin main
+
             docker compose pull
             docker compose down
             docker compose up -d
