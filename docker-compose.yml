@@ -3,7 +3,7 @@ version: '3'
 services:
   frontend:
     # build: ./frontend
-    image: moguda/timeapp-frontend-dev
+    image: moguda/timeapp-frontend-1_24_4
     restart: always
     ports:
       - '3000:3000'
@@ -12,7 +12,7 @@ services:
       - ./frontend:/app
   api:
     # build: ./api
-    image: moguda/timeapp-api-dev
+    image: moguda/timeapp-api-1_24_4
     restart: always
     ports:
       - '5000:5000'
