@@ -64,7 +64,7 @@ jobs:
     needs: build-and-deploy
     runs-on: ubuntu-latest
 
-    step:
+    steps:
       - name: Cloning repsitory
         uses: actions/checkout@v4
 
