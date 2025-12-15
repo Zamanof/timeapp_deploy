@@ -34,4 +34,4 @@ jobs:
       
       - name: API Image build and push to docker hub
         run: docker build -t ${{secrets.DOCKER_USERNAME}}/timeapp-api-1_24_4 ./api
-             docker push ${{secrets.DOCKER_USERNAME}}/timeapp-api-1_24_4 ./api
+             docker push ${{secrets.DOCKER_USERNAME}}/timeapp-api-1_24_4
