@@ -66,20 +66,21 @@ jobs:
       - name: VPS Deploy
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{secrets.AWS_HOST}}
-          username: ${{secrets.AWS_USERNAME}}
-          key: ${{secrets.AWS_SSH_KEY}}
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.AZURE_VM_SSH_KEY }}
           port: 22
-
+          
           script: |
-            if [ ! -d "/zamanov-time-app/.git"]; then
-             git clone https://github.com/${{github.repository}} /zamanov-time-app
+            if [ ! -d "/app/time-app/.git" ]; then
+             git clone https://github.com/${{github.repository}} /app/time-app
             fi
 
-            cd /zamanov-time-app
+            cd /app/time-app
             git pull origin main
 
             docker compose pull
             docker compose down
             docker compose up -d
             docker image prune -f
+            
