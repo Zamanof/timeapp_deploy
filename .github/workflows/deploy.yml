@@ -72,11 +72,11 @@ jobs:
           port: 22
 
           script: |
-            if [! -d "/app/time-app/.git"]; then
-             git clone https://github.com/${{github.repository}} /app/time-app
+            if [! -d "/zamanov-time-app/.git"]; then
+             git clone https://github.com/${{github.repository}} /zamanov-time-app
             fi
 
-            cd /app/time-app
+            cd /zamanov-time-app
             git pull origin main
 
             docker compose pull
