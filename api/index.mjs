@@ -8,7 +8,6 @@ import {
 } from './src/utils/records.mjs'
 
 const PORT = 5000
-
 const app = express()
 app.use(bodyParser.json())
 app.use(cors())
