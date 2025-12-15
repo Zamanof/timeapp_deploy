@@ -15,3 +15,10 @@ test(
        expect(division(15, 3)).toBe(5)
     }
 )
+
+test(
+    '20/20 equal 1',
+    ()=>{
+       expect(division(20, 20)).toBe(1)
+    }
+)
