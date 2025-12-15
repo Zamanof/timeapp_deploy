@@ -78,7 +78,7 @@ jobs:
 
           script: |
             if [ ! -d "/app/zamanov-time-app/.git" ]; then
-            git clone https://github.com/Zamanof/timeapp_deploy.git /app/zamanov-time-app
+              git clone https://github.com/Zamanof/timeapp_deploy.git /app/zamanov-time-app
             fi
 
             cd /app/zamanov-time-app
