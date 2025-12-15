@@ -10,7 +10,7 @@ env:
   IMAGE_NAME: ${{github.repository}}
 jobs:
   test:
-    if: github.event.name == 'push'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     strategy:
@@ -39,7 +39,7 @@ jobs:
         run: npm install
 
   build-and-deploy:
-    if: github.event.name == 'push'
+    if: github.event_name == 'push'
     needs: test
     runs-on: ubuntu-latest
 
@@ -64,7 +64,7 @@ jobs:
             docker build -t ${{secrets.DOCKER_USERNAME}}/timeapp-frontend-1_24_4 ./api
             docker push ${{secrets.DOCKER_USERNAME}}/timeapp-frontend-1_24_4
   deploy:
-    if: github.event.name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
     needs: build-and-deploy
     runs-on: ubuntu-latest
 
