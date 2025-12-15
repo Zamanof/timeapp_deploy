@@ -10,6 +10,7 @@ env:
   IMAGE_NAME: ${{github.repository}}
 jobs:
   test:
+    if: github.event.name == 'push'
     runs-on: ubuntu-latest
 
     strategy:
@@ -38,6 +39,7 @@ jobs:
         run: npm install
 
   build-and-deploy:
+    if: github.event.name == 'push'
     needs: test
     runs-on: ubuntu-latest
 
