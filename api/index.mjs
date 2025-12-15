@@ -8,13 +8,13 @@ import {
 } from './src/utils/records.mjs'
 
 const PORT = 5000
-// Salam
+
 const app = express()
 app.use(bodyParser.json())
 app.use(cors())
 
 app.get('/', (_, res) => {
-  res.send('Salam from the time saving to my service!')
+  res.send('Hello from the time saving service!')
 })
 
 app.get('/times', async (_, res) => {
