@@ -48,13 +48,13 @@ jobs:
 
       - name: API image build and push
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/time-app-api ./api
-          docker push ${{ secrets.DOCKER_USERNAME }}/time-app-api
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/timeapp-api-1_24_4 ./api
+          docker push ${{ secrets.DOCKER_USERNAME }}/timeapp-api-1_24_4
 
       - name: Front image build and push
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/time-app-front ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/time-app-front
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/timeapp-api-1_24_4 ./frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/timeapp-frontend-1_24_4
 
   deploy:
     if: github.event_name == 'workflow_dispatch'
